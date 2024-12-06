@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guess the Secret Numbers Game</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="game-container">
+    <h1>🎮 Guess the Secret Numbers! 🎮</h1>
+    <div>
+      <label for="lowInput">Low:</label>
+      <input type="number" id="lowInput" value="1">
+    </div>
+    <div>
+      <label for="highInput">High:</label>
+      <input type="number" id="highInput" value="10">
+    </div>
+    <button id="startButton">Start Game</button>
+    <div id="scoreLabel">Score: 0</div>
+    <div id="feedbackLabel"></div>
+
+    <div>
+      <label for="guessLowInput">Guess Low:</label>
+      <input type="number" id="guessLowInput" value="1">
+    </div>
+    <div>
+      <label for="guessHighInput">Guess High:</label>
+      <input type="number" id="guessHighInput" value="10">
+    </div>
+    <button id="checkButton">Check Interval</button>
+
+    <div>
+      <label for="guessNumberInput">Guess the Number:</label>
+      <input type="number" id="guessNumberInput" value="1">
+    </div>
+    <button id="guessButton">Submit Guess</button>
+
+    <div id="resultLabel"></div>
+    <div>
+      <label for="restartCheckbox">
+        <input type="checkbox" id="restartCheckbox"> Restart the game?
+      </label>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
