@@ -48,3 +48,84 @@
   <script src="script.js"></script>
 </body>
 </html>
+
+
+let numq = 0;
+let currentScore = 0;
+let n1, n2;
+let savedHighValue = 10;
+
+function respond(n) {
+  const lst = Array.from({length: n}, (_, i) => i + 1);
+  n1 = lst[Math.floor(Math.random() * lst.length)];
+  lst.splice(lst.indexOf(n1), 1);
+  n2 = lst[Math.floor(Math.random() * lst.length)];
+}
+
+function optimal(n) {
+  return Math.ceil(Math.log2(n - 1));
+}
+
+function score(numq, n, currentScore, guessedCorrectly) {
+  if (guessedCorrectly) {
+    if (numq <= optimal(n)) {
+      currentScore += (optimal(n) - numq + 2) * 100;
+    } else if (numq === optimal(n) + 1) {
+      currentScore += 100;
+    }
+  }
+  return currentScore;
+}
+
+function startGame() {
+  const n = parseInt(document.getElementById('highInput').value);
+  if (n < 2) {
+    document.getElementById('feedbackLabel').textContent = "Please enter a value greater than 1.";
+    return;
+  }
+  
+  savedHighValue = n;
+  respond(n);
+
+  numq = 0;
+  document.getElementById('scoreLabel').textContent = `Score: ${currentScore}`;
+  document.getElementById('feedbackLabel').textContent = "Game started! Make your guess.";
+}
+
+function checkInterval() {
+  numq++;
+  const low = parseInt(document.getElementById('guessLowInput').value);
+  const high = parseInt(document.getElementById('guessHighInput').value);
+  const count = [n1, n2].filter(num => num >= low && num <= high).length;
+
+  document.getElementById('feedbackLabel').textContent = `There ${count > 1 ? 'are' : 'is'} ${count} secret number${count !== 1 ? 's' : ''} in your interval. (Guesses: ${numq})`;
+  document.getElementById('scoreLabel').textContent = `Score: ${currentScore}`;
+}
+
+function makeGuess() {
+  numq++;
+  const guess = parseInt(document.getElementById('guessNumberInput').value);
+  const guessedCorrectly = [n1, n2].includes(guess);
+
+  if (guessedCorrectly) {
+    currentScore = score(numq, Math.max(n1, n2), currentScore, guessedCorrectly);
+    document.getElementById('resultLabel').textContent = "YOU WON";
+    document.getElementById('resultLabel').style.color = "limegreen";
+  } else {
+    document.getElementById('resultLabel').textContent = "GAME OVER";
+    document.getElementById('resultLabel').style.color = "orangered";
+  }
+  document.getElementById('scoreLabel').textContent = `Score: ${currentScore}, Guesses: ${numq}`;
+}
+
+function checkRestart() {
+  if (document.getElementById('restartCheckbox').checked) {
+    startGame();
+    document.getElementById('restartCheckbox').checked = false;
+  }
+}
+
+document.getElementById('startButton').onclick = startGame;
+document.getElementById('checkButton').onclick = checkInterval;
+document.getElementById('guessButton').onclick = makeGuess;
+document.getElementById('restartCheckbox').addEventListener('change', checkRestart);
